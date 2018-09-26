@@ -11,6 +11,7 @@ import {
   Text,
   View
 } from 'react-native';
+import {createStore} from 'redux';
 
 const instructions = Platform.select({
   ios: 'Press Cmd+R to reload,\n' +
@@ -19,10 +20,61 @@ const instructions = Platform.select({
     'Shake or press menu button for dev menu',
 });
 
+const counter  = (state = 0 ,action )=>{
+  switch(action.type)
+  {
+    case 'INCREMENT':
+    return state+1;
+    case 'DECREMENT':
+    return state-1;
+
+    default:
+    return state;
+  }
+}
+
+const todos = (state=[],action)=>{
+  switch(action.type){
+    case 'ADD_TODO':
+    return[
+      ...state,
+      {
+        id:action.id,
+        text:action.text,
+        completed:false
+      }
+    ];
+    default:
+    return state;
+  }
+}
+
+const testAddTodo = () => {
+  const stateBefore = [];
+  const action = {
+    type: 'ADD+TODO',
+    id:0,
+    text:'Learn Redux'
+  };
+  const stateAfter = [
+  {
+    id:0,
+    text:'Learn Redux',
+    completed:false
+  }
+  ];
+}
+const store = createStore(counter);
+
 type Props = {};
 export default class App extends Component<Props> {
   render() {
+    store.dispatch({type:'INCREMENT'});
+    testAddTodo();
+    console.log('All tests passed');
+  console.log(store.getState());
     return (
+     
       <View style={styles.container}>
         <Text style={styles.welcome}>
           Welcome to React Native!
@@ -56,3 +108,10 @@ const styles = StyleSheet.create({
     marginBottom: 5,
   },
 });
+
+// function mapStateToProps(state){
+//   return{
+//     count:state
+//   }
+// }
+
